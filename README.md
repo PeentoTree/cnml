@@ -1,67 +1,66 @@
-<p align="center">
-    <a href="https://halo.run" target="_blank" rel="noopener noreferrer">
-        <img width="100" src="https://halo.run/logo" alt="Halo logo" />
-    </a>
-</p>
+## 前端
 
-<p align="center"><b>Halo</b> [ˈheɪloʊ]，强大易用的开源建站工具。</p>
-
-<p align="center">
-<a href="https://github.com/halo-dev/halo/releases"><img alt="GitHub release" src="https://img.shields.io/github/release/halo-dev/halo.svg?style=flat-square&include_prereleases" /></a>
-<a href="https://hub.docker.com/r/halohub/halo"><img alt="Docker pulls" src="https://img.shields.io/docker/pulls/halohub/halo?style=flat-square" /></a>
-<a href="https://github.com/halo-dev/halo/commits"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/halo-dev/halo.svg?style=flat-square" /></a>
-<a href="https://github.com/halo-dev/halo/actions"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/halo-dev/halo/halo.yaml?branch=main&style=flat-square" /></a>
-<a href="https://codecov.io/gh/halo-dev/halo"><img alt="Codecov percentage" src="https://img.shields.io/codecov/c/github/halo-dev/halo/main?style=flat-square&token=YsRUg9fall"/></a>
-<br />
-<a href="https://halo.run">官网</a>
-<a href="https://docs.halo.run">文档</a>
-<a href="https://bbs.halo.run">社区</a>
-<a href="https://gitee.com/halo-dev">Gitee</a>
-<a href="https://t.me/halo_dev">Telegram 频道</a>
-</p>
-
-------------------------------
-
-## 快速开始
-
-```bash
-docker run \
-  -it -d \
-  --name halo \
-  -p 8090:8090 \
-  -v ~/.halo2:/root/.halo2 \
-  halohub/halo:2.2 \
-  --halo.external-url=http://localhost:8090/ \
-  --halo.security.initializer.superadminusername=admin \
-  --halo.security.initializer.superadminpassword=P@88w0rd
+### 本地启动
+```
+pnpm install
+pnpm build:packages
+pnpm dev
 ```
 
-以上仅作为体验使用，详细部署文档请查阅：<https://docs.halo.run/getting-started/install/docker-compose>
+## 后端
 
-## 在线体验
+### 环境安装
+1. 先安装jdk17
+    ```
+    brew install openjdk@17
+    sudo ln -sfn $(brew --prefix)/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk 
+    ```
+    添加JAVA_HOME, 编辑~/.bash_profile
+    ```
+    JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home"
+    export JAVA_HOME
+    CLASS_PATH="$JAVA_HOME/lib"
+    PATH=".$PATH:$JAVA_HOME/bin"
+    ```
+2. 安装gradle
+    执行项目下的gradlew文件会自动下载对应版本gradle
+    ```
+    ./gradlew
+    ```
 
-- 环境地址：<https://demo.halo.run>
-- 后台地址：<https://demo.halo.run/console>
-- 用户名：`demo`
-- 密码：`P@ssw0rd123..`
+### vscode本地启动
+1. 安装扩展Extension Pack for Java，如果安装失败，可以尝试下载扩展文件安装
+2. 等待gradle安装依赖之后，创建luanch.json
+    ```
+    {
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Application",
+            "request": "launch",
+            "mainClass": "run.halo.app.Application",
+            // 指定配置文件
+            "args": "--spring.profiles.active=dev",
+            "preLaunchTask": "gradle: compileJava",
+            "projectName": "halo-application"
+        }
+    ]
+    }
+    ```
 
-## 生态
+3. 启动项目，访问`http://localhost:8090/console/#/theme`，账号密码在配置文件里
+   
+4. 如果`/`访问报500错误，代表没有安装主题，在上面的路由页面里启用默认主题
+5. 
 
-可访问 [awesome-halo](https://github.com/halo-sigs/awesome-halo) 查看已经适用于 Halo 2.0 的主题和插件，以及适用于 Halo
-1.x 的相关仓库。
-
-## 许可证
-
-[![license](https://img.shields.io/github/license/halo-dev/halo.svg?style=flat-square)](https://github.com/halo-dev/halo/blob/master/LICENSE)
-
-Halo 使用 GPL-v3.0 协议开源，请遵守开源协议。
-
-## 贡献
-
-参考 [CONTRIBUTING](https://github.com/halo-dev/halo/blob/master/CONTRIBUTING.md)。
-
-<a href="https://github.com/halo-dev/halo/graphs/contributors"><img src="https://opencollective.com/halo/contributors.svg?width=890&button=false" /></a>
-
-## 状态
-
-![Repobeats analytics](https://repobeats.axiom.co/api/embed/ad008b2151c22e7cf734d2688befaa795d593b95.svg "Repobeats analytics image")
+    
